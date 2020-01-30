@@ -1,8 +1,7 @@
 const express = require('express')
 const app = express()
-const bodyParser = require('body-parser')
 
-app.use(bodyParser.json())
+app.use(express.json())
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
