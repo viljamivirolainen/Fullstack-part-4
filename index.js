@@ -1,15 +1,12 @@
 const express = require('express')
 const app = express()
-const bodyParser = require('body-parser')
 require('dotenv').config()
 const Note = require('./models/note')
 
 const cors = require('cors')
 
 app.use(cors())
-
-app.use(bodyParser.json())
-
+app.use(express.json())
 app.use(express.static('build'))
 
 app.get('/api/notes', (request, response) => {
