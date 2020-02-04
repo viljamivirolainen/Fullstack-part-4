@@ -18,18 +18,6 @@ notesRouter.get('/', async (request, response) => {
   response.json(notes.map(note => note.toJSON()))
 })
 
-notesRouter.get('/:id', (request, response, next) => {
-  Note.findById(request.params.id)
-    .then(note => {
-      if (note) {
-        response.json(note.toJSON())
-      } else {
-        response.status(404).end()
-      }
-    })
-    .catch(error => next(error))
-})
-
 notesRouter.post('/', async (request, response) => {
   const body = request.body
   const token = getTokenFrom(request)
@@ -62,6 +50,21 @@ notesRouter.get('/:id', async (request, response) => {
   } else {
     response.status(404).end()
   }
+})
+
+notesRouter.put('/:id', (request, response, next) => {
+  const body = request.body
+
+  const note = {
+    content: body.content,
+    important: body.important,
+  }
+
+  Note.findByIdAndUpdate(request.params.id, note, { new: true })
+    .then(updatedNote => {
+      response.json(updatedNote.toJSON())
+    })
+    .catch(error => next(error))
 })
 
 notesRouter.delete('/:id', async (request, response) => {
